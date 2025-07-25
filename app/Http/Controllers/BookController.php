@@ -132,15 +132,10 @@ public function update(Request $request, Book $book)
     }
 
     $validated = $request->validate([
-        //'title' => 'required|string|max:255',
-        //'author' => 'nullable|string|max:255',
-        //'format' => 'required|in:紙,電子',
         'status' => 'required|in:未読,読書中,読了',
-        //'isbn' => 'nullable|string',
         'notes' => 'nullable|string',
         'finished_at' => 'nullable|date',
         'cover' => 'nullable|image|max:2048',
-        //'cover_url' => 'nullable|url',
         'is_public' => 'nullable|boolean',
     ]);
 

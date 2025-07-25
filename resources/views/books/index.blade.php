@@ -18,7 +18,7 @@
                 <h2 class="text-2xl font-semibold mb-4">次はこれを読みませんか？</h2>
                 <a href="{{ route('books.edit', $nextBook) }}">
                 <div class="inline-block bg-white shadow-md rounded p-6 px-20">
-                    <img src="{{ $nextBook->cover_path ? (Str::startsWith($nextBook->cover_path, 'http') ? $nextBook->cover_path : asset('storage/' . $nextBook->cover_path)) : url('/book-cover/' . $nextBook->id) }}}}"
+                    <img src="{{ $nextBook->cover_path ? (Str::startsWith($nextBook->cover_path, 'http') ? $nextBook->cover_path : asset('storage/' . $nextBook->cover_path)) : url('/book-cover/' . $nextBook->id)}}"
                         alt="{{ $nextBook->title }}" class="w-40 h-60 mx-auto mb-4 object-cover">
                     <h3 class="text-xl font-bold">{{ $nextBook->title }}</h3>
                     <p class="text-gray-600">{{ $nextBook->author ?? '不明' }}</p>
