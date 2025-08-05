@@ -81,9 +81,16 @@ class BookController extends Controller
         if ($book->cover_path && str_starts_with($book->cover_path, 'http')) {
             return redirect($book->cover_path);
         }
-
+        
+        $path = public_path('images/default_cover.png');
+        
+        if (!file_exists($path)) {
+            logger("ファイルが存在しません: {$path}");
+            abort(404);
+        }
+        
         $manager = new ImageManager(new Driver());
-        $image = $manager->read(public_path('images/default_cover.png'))
+        $image = $manager->read(fopen($path, 'r'))
             ->resize(300, 400)
             ->text($book->title ?? 'タイトル未設定', 150, 200, function ($font) {
                 $font->filename(public_path('fonts/KaiseiDecol-Regular.ttf'));
