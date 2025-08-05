@@ -60,7 +60,7 @@ class BookController extends Controller
     if ($request->hasFile('cover')) {
         $coverPath = $request->file('cover')->store('covers', 'public');
     } elseif ($request->filled('cover_url')) {
-        $coverPath = $request->input('cover_url'); // 画像URLをそのまま保存
+        $coverPath = $request->input('cover_url'); 
     }
 
     $request->user()->books()->create(array_merge($validated, [
