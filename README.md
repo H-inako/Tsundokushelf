@@ -6,6 +6,13 @@ Tsundokushelf は「積読（つんどく）」本を管理するための Web �
 ## デモサイト
 https://hinakoya.com
 
+### テストアカウント情報
+
+以下のアカウントでログインすることで、機能をお試しいただけます。
+
+- メールアドレス: `test@example.com`
+- パスワード: `testuserpass`
+
 ## スクリーンショット
 ### トップページ
 ![トップページ](public/images/toppage.png)
