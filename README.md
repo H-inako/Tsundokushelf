@@ -41,8 +41,8 @@ php artisan key:generate
 php artisan migrate
 npm run dev
 
-📅 今後の追加予定
+##今後の追加予定
 レスポンシブ対応にする
 
-🖋️ 作者
+##作者
 Hinako Hamada
