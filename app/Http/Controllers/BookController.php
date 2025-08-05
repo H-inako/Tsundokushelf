@@ -83,7 +83,7 @@ class BookController extends Controller
         }
 
         $manager = new ImageManager(new Driver());
-        $image = $manager->read(storage_path('app/public/images/default_cover.png'))
+        $image = $manager->read(public_path('images/default_cover.png'))
             ->resize(300, 400)
             ->text($book->title ?? 'タイトル未設定', 150, 200, function ($font) {
                 $font->filename(public_path('fonts/KaiseiDecol-Regular.ttf'));
