@@ -92,12 +92,12 @@ class BookController extends Controller
         $manager = new ImageManager(new Driver());
         $image = $manager->read(fopen($path, 'r'))
             ->resize(300, 400)
-           // ->text($book->title ?? 'タイトル未設定', 150, 200, function ($font) {
-            //    $font->filename(public_path('fonts/KaiseiDecol-Regular.ttf'));
-            //    $font->size(24);
-            //    $font->color('#000');
-            //    $font->align('center');
-            //    $font->valign('center');
+            ->text($book->title ?? 'タイトル未設定', 150, 200, function ($font) {
+                $font->filename(public_path('fonts/KaiseiDecol-Regular.ttf'));
+                $font->size(24);
+                $font->color('#000');
+                $font->align('center');
+                $font->valign('center');
             });
 
         return response($image->encode(new PngEncoder()))
