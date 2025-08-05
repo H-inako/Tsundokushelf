@@ -45,7 +45,7 @@ npm install
 php artisan key:generate
 php artisan migrate
 npm run dev
----
+```
 ##今後の追加予定
 レスポンシブ対応にする
 
