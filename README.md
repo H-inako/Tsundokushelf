@@ -7,9 +7,14 @@ Tsundokushelf は「積読（つんどく）」本を管理するための Web �
 https://hinakoya.com
 
 ## スクリーンショット
-トップページ(public/images/toppage.png)
-マイページ(public/images/dashboard.png)
-本棚(public/images/book-shelf.png)
+### 🏠 トップページ
+![トップページ](public/images/toppage.png)
+
+### 👤 マイページ
+![マイページ](public/images/dashboard.png)
+
+### 📚 本棚ページ
+![本棚](public/images/book-shelf.png)
 
 ## 🛠️ 主な機能
 - ISBN から書籍情報を自動取得（Google Books API）して登録
