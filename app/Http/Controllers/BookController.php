@@ -88,17 +88,22 @@ class BookController extends Controller
             logger("ファイルが存在しません: {$path}");
             abort(404);
         }
-        
+
         $manager = new ImageManager(new Driver());
-        $image = $manager->read(fopen($path, 'r'))
-            ->resize(300, 400)
-            ->text($book->title ?? 'タイトル未設定', 150, 200, function ($font) {
-                $font->filename(public_path('fonts/KaiseiDecol-Regular.ttf'));
-                $font->size(24);
-                $font->color('#000');
-                $font->align('center');
-                $font->valign('center');
-            });
+        $image = $manager->canvas(300, 400, '#f1dfb6');
+
+       // return $image->toResponse('png');
+        
+      //  $manager = new ImageManager(new Driver());
+      //  $image = $manager->read(fopen($path, 'r'))
+      //      ->resize(300, 400)
+      //      ->text($book->title ?? 'タイトル未設定', 150, 200, function ($font) {
+      //          $font->filename(public_path('fonts/KaiseiDecol-Regular.ttf'));
+      //          $font->size(24);
+      //          $font->color('#000');
+      //          $font->align('center');
+      //          $font->valign('center');
+      //      });
 
         return response($image->encode(new PngEncoder()))
             ->header('Content-Type', 'image/png');
