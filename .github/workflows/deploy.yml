@@ -30,5 +30,5 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_KEY }}
-        source: "public/build"
+        source: "build"
         target: "/var/www/tsundokushelf/public"
