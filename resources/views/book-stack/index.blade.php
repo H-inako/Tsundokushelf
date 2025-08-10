@@ -1,37 +1,55 @@
 <x-app-layout>
-  <div class="flex flex-col min-h-screen bg-yellow-50">
-    <div class="flex justify-center gap-6 my-6">
-        <a href="{{ route('book.stack', ['view' => 'all']) }}"
-           class="px-4 py-2 rounded {{ request('view') === 'all' || !request('view') ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-gray-500' }}">
-            すべて
-        </a>
-        <a href="{{ route('book.stack', ['view' => 'read']) }}"
-           class="px-4 py-2 rounded {{ request('view') === 'read' ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-gray-500' }}">
-            読了
-        </a>
-        <a href="{{ route('book.stack', ['view' => 'unread']) }}"
-           class="px-4 py-2 rounded {{ request('view') === 'unread' ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-gray-500' }}">
-            積読
-        </a>
-    </div>
+    @php
+        $per = (int) request('per', 15);
+    @endphp
 
-    @if ($books->isEmpty())
-      <p class="text-gray-500 text-lg mt-10 text-center min-h-screen">まだこの棚に本はありません。</p>
-    @else
-      <main class="flex-grow flex flex-col items-center">
-  <div class="space-y-10 mt-2">
-    @foreach ($books->chunk(15)->reverse() as $chunk)
-      @php
-        $colors = [  '#D38A53', '#C6797B', '#D9A44D', '#DB9686', '#C09A91', '#B98B5D', '#D4A671', '#CC6E6D',
-    '#8B9C75', '#A3B29B', '#84986F', '#678788', '#9CAF84', '#8FAABF'];
-        shuffle($colors);
-      @endphp
+    <div class="flex flex-col min-h-screen bg-yellow-50">
+        <div class="flex justify-center gap-6 my-6">
+            <a href="{{ route('book.stack', ['view' => 'all']) }}"
+                class="px-4 py-2 rounded {{ request('view') === 'all' || !request('view') ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-gray-500' }}">
+                すべて
+            </a>
+            <a href="{{ route('book.stack', ['view' => 'read']) }}"
+                class="px-4 py-2 rounded {{ request('view') === 'read' ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-gray-500' }}">
+                読了
+            </a>
+            <a href="{{ route('book.stack', ['view' => 'unread']) }}"
+                class="px-4 py-2 rounded {{ request('view') === 'unread' ? 'bg-yellow-500 text-white' : 'bg-yellow-50 text-gray-500' }}">
+                積読
+            </a>
+        </div>
 
-      <div class="relative flex gap-[4px] justify-start items-end pb-2">
-        @foreach ($chunk as $index => $book)
-          <a href="{{ route('books.edit', $book) }}"
-             class="fall-in transform transition duration-300 ease-in-out hover:scale-110"
-             style="
+        @if ($books->isEmpty())
+            <p class="text-gray-500 text-lg mt-10 text-center min-h-screen">まだこの棚に本はありません。</p>
+        @else
+            <main class="flex-grow flex flex-col items-center">
+                <div class="space-y-10 mt-2">
+                    @foreach ($books->chunk($per)->reverse() as $chunk)
+                        @php
+                            $colors = [
+                                '#D38A53',
+                                '#C6797B',
+                                '#D9A44D',
+                                '#DB9686',
+                                '#C09A91',
+                                '#B98B5D',
+                                '#D4A671',
+                                '#CC6E6D',
+                                '#8B9C75',
+                                '#A3B29B',
+                                '#84986F',
+                                '#678788',
+                                '#9CAF84',
+                                '#8FAABF',
+                            ];
+                            shuffle($colors);
+                        @endphp
+
+                        <div class="relative flex gap-[4px] justify-start items-end pb-2">
+                            @foreach ($chunk as $index => $book)
+                                <a href="{{ route('books.edit', $book) }}"
+                                    class="fall-in transform transition duration-300 ease-in-out hover:scale-110"
+                                    style="
                  animation-delay: {{ $loop->iteration * 0.05 }}s;
                  writing-mode: vertical-rl;
                  background-color: {{ $colors[$index % count($colors)] }};
@@ -46,21 +64,57 @@
                  text-align: center;
                  padding: 4px;
              ">
-              {{ Str::limit($book->title, 20) }}
-          </a>
-        @endforeach
+                                    {{ Str::limit($book->title, 20) }}
+                                </a>
+                            @endforeach
 
-        <!-- 棚板 -->
-        <div class="absolute bottom-0 left-0 -translate-x-8 w-[calc(100%+4rem)] h-2 bg-yellow-700 rounded-full shadow-md"></div>
-      </div>
-    @endforeach
-  </div>
-</main>
+                            <!-- 棚板 -->
+                            <div
+                                class="absolute bottom-0 left-0 -translate-x-8 w-[calc(100%+4rem)] h-2 bg-yellow-700 rounded-full shadow-md">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </main>
 
-    @endif
+        @endif
 
-    <footer class="mt-10">
-      @include('layouts.footer')
-    </footer>
-  </div>
+        <footer class="mt-10">
+            @include('layouts.footer')
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            function decidePer(w) {
+                // 好みで調整：スマホ6 / タブレット10 / PC15
+                if (w < 640) return 6; // ~sm
+                if (w < 1024) return 10; // sm, md
+                return 15; // lg~
+            }
+
+            const url = new URL(location.href);
+            const current = parseInt(url.searchParams.get('per') || '0', 10);
+            const desired = decidePer(window.innerWidth);
+
+            if (current !== desired) {
+                url.searchParams.set('per', desired);
+                location.replace(url.toString()); // 履歴を汚さない
+                return;
+            }
+
+            let last = desired,
+                t;
+            addEventListener('resize', () => {
+                clearTimeout(t);
+                t = setTimeout(() => {
+                    const next = decidePer(window.innerWidth);
+                    if (next !== last) {
+                        url.searchParams.set('per', next);
+                        location.replace(url.toString());
+                    }
+                }, 150);
+            });
+        })();
+    </script>
 </x-app-layout>
